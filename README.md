@@ -11,6 +11,11 @@ This repository is a graphical user interface (GUI) that converts multiple types
 - work directly from a zipped file
 
 ## Requirements
+Two applications are needed:
+- Microsoft Office
+- LibreOffice (opensource officepackage)
+  - to download LibreOffice go to https://nl.libreoffice.org/
+
 The executable ('PDF_conversion_tool.exe') installs all the needed dependencies to run the tool. If the tool is run from the .py file ('PDF_conversion_tool.py') there are extra files needed (also available in this repository):
 
 - file '_functions/check_length.py'
@@ -25,13 +30,21 @@ The executable ('PDF_conversion_tool.exe') installs all the needed dependencies 
 - packages:
   - pikepdf (see file 'requirements/requirements_gui.txt')
     - source code for this library can be found in https://github.com/pikepdf/pikepdf
-    - this library is licensed under the Mozilla Public License 2.0
+  - pandas permissive license
+    - source code for this library can be found in https://github.com/pandas-dev/pandas
+  - numpy permissive license
+    - source code for this library can be found in https://github.com/numpy/numpy
+  - tika Apache License version 2 ("ALv2")
+  - pdfminer MIT License (MIT)
+
 
 
 ## Test files
 Test files are also available in this repository and can be downloaded to test the tool:
 - 1 normal folder 'test files'
 - 1 zip folder 'test files_zip.zip'
+
+See the user manual for more information on the installation and use of the tool.
 
 ## Using the tool
 ### Run the tool using the python script
