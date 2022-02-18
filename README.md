@@ -28,16 +28,10 @@ The executable ('PDF_conversion_tool.exe') installs all the needed dependencies 
 - file '_functions/unzip_files.py'
 - 'logo.ico' (file with a logo)
 - packages:
-  - pikepdf (see file 'requirements/requirements_gui.txt')
-    - source code for this library can be found in https://github.com/pikepdf/pikepdf
-  - pandas permissive license
-    - source code for this library can be found in https://github.com/pandas-dev/pandas
-  - numpy permissive license
-    - source code for this library can be found in https://github.com/numpy/numpy
-  - tika Apache License version 2 ("ALv2")
-  - pdfminer MIT License (MIT)
-
-
+  - [pikepdf](https://github.com/pikepdf/pikepdf)
+  - [pywin32](https://github.com/mhammond/pywin32) BSD-style, permissive software license which is compatible with the GNU General Public License (GPL)
+  - [openpyxl](https://openpyxl.readthedocs.io/en/stable/) MIT/Expat permissive software license
+  - [pillow](https://github.com/python-pillow/Pillow) HPND License permissive software license
 
 ## Test files
 Test files are also available in this repository and can be downloaded to test the tool:
