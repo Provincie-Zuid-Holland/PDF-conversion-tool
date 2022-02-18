@@ -13,8 +13,7 @@ This repository is a graphical user interface (GUI) that converts multiple types
 ## Requirements
 Two applications are needed:
 - Microsoft Office
-- LibreOffice (opensource officepackage)
-  - to download LibreOffice go to https://nl.libreoffice.org/
+- [LibreOffice (opensource officepackage)](https://nl.libreoffice.org/)
 
 The executable ('PDF_conversion_tool.exe') installs all the needed dependencies to run the tool. If the tool is run from the .py file ('PDF_conversion_tool.py') there are extra files needed (also available in this repository):
 
