@@ -26,7 +26,7 @@ The executable ('PDF_conversion_tool.exe') installs all the needed dependencies 
 - file '_functions/print.py'
 - file '_functions/unzip_files.py'
 - 'logo.ico' (file with a logo)
-- packages:
+- packages (see file 'requirements/requirements_gui.txt'):
   - [pikepdf](https://github.com/pikepdf/pikepdf)
   - [pywin32](https://github.com/mhammond/pywin32) BSD-style, permissive software license which is compatible with the GNU General Public License (GPL)
   - [openpyxl](https://openpyxl.readthedocs.io/en/stable/) MIT/Expat permissive software license
