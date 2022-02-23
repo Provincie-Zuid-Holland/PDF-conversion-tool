@@ -200,7 +200,7 @@ class Application(tk.Frame):
                     self.all_files.append(os.path.join(root, name))
 
         # print messages
-        total_found = 'Number of files found: ' + str(len(self.all_files))
+        total_found = 'Total number of files: ' + str(len(self.all_files))
         found_emails = "Number of emails: " + \
             str(len(email_files))
         found_pdfs = 'Number of pdf\'s: ' + str(self.pdf_files)
@@ -252,14 +252,14 @@ class Application(tk.Frame):
         self.parent.title('Remove duplicates')
         text = 'Would you like to remove duplicates?'
         self.parent.resizable(width="false", height="false")
-        self.parent.minsize(width=250, height=75)
-        self.parent.maxsize(width=250, height=75)
+        self.parent.minsize(width=275, height=75)
+        self.parent.maxsize(width=275, height=75)
         self.label = tk.Label(self.parent, text=text).place(
             relx=.1, rely=.2, anchor="w")
         self.remov_yes = tk.Button(self.parent, text='Yes', command=lambda: self.convert_files(
-            True)).place(relx=.55, rely=.7, anchor="c")
+            True)).place(relx=.58, rely=.7, anchor="c")
         self.remov_no = tk.Button(self.parent, text='No', command=lambda: self.convert_files(
-            False)).place(relx=.67, rely=.7, anchor="c")
+            False)).place(relx=.69, rely=.7, anchor="c")
         self.quit = tk.Button(self.parent, text='Stop', command=self.cancel).place(
             relx=.81, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
