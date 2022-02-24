@@ -1,4 +1,6 @@
-![image.png](image/PZH_Basislogo.png)
+<p align="center">
+  <img src="image/PZH_Basislogo.svg" width="50%">
+</p>
 
 ## Introduction
 This repository is a graphical user interface (GUI) that converts multiple types of files to pdf. With this tool it is possible to convert multiple pdf's at once. The tool may be run via the .py file or via de executable. The tool is able to:
@@ -35,11 +37,6 @@ The executable ('PDF_conversion_tool.exe') installs all the needed python depend
   - [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
   - [pillow](https://github.com/python-pillow/Pillow)
 
-## Test files
-Test files are also available in this repository and can be downloaded to test the tool:
-- 1 normal folder 'test files'
-- 1 zip folder 'test files_zip.zip'
-
 See the user manual for more information on the installation and use of the tool.
 
 ## Using the tool
@@ -48,11 +45,11 @@ See the user manual for more information on the installation and use of the tool
 - Install the dependencies: 'pip install -r requirements_gui.txt'
 - Download the files 'PDF_conversion_tool.py' and 'logo.ico' and the folder '_functions'
 - Download OfficeToPDF.exe into the same location as the above files
-- Run the file 'PDF_conversion_tool.py' to convert one or more pdf files (see 'Manual PDF conversion tool.pdf')
+- Run the file 'PDF_conversion_tool.py' to convert one or more pdf files (see 'PDF-conversion-tool.pdf')
 
 ### Run the tool using the executable
 - Download the file 'PDF_conversion_tool.exe'
-- Read the instructions manual ('Manual PDF conversion tool.pdf') to learn how to install and run the tool
+- Read the instructions manual ('PDF-conversion-tool.pdf') to learn how to install and run the tool
 
 ### Error detection
 Every time the tool is used, information on what happens in every step of the tool is saved in a file (‘Logging_PDF_conversion_tool.txt’), in the same folder als the tool. If errors occur, this file can be used to check which step went wrong.
