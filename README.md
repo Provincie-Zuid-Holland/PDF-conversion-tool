@@ -41,7 +41,7 @@ See the user manual for more information on the installation and use of the tool
 - Read the instructions manual ('PDF-conversion-tool.pdf') to learn how to install and run the tool
 
 ### Error detection
-Every time the tool is used, information on what happens in every step of the tool is saved in a file (‘Logging_PDF_conversion_tool.txt’), in the same folder als the tool. If errors occur, this file can be used to check which step went wrong.
+To help with error detection information on every step of the tool is saved in two files: ‘Logging_PDF_conversion_tool.txt’ and 'Log_results.json'.
 
 ## Author
 Joana Cardoso
