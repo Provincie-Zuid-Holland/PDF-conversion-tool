@@ -29,7 +29,7 @@ See the user manual for more information on the installation and use of the tool
 
 ## Using the tool
 ### Run the tool using the python script
-- Make a new virtual environment and activate de new environment
+- Create a new virtual environment (Python 3.7) and activate the new environment
 - Install the dependencies: 'pip install -r requirements_gui.txt'
 - Download the files 'PDF_conversion_tool.py' and 'logo.ico', and the folder '_functions'
 - Download OfficeToPDF.exe into the same location as the above files
