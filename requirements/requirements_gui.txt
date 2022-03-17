@@ -1,4 +1,3 @@
 openpyxl==3.0.4
 pikepdf==4.1.0
-Pillow==8.4.0
 pywin32==227

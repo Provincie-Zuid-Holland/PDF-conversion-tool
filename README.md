@@ -23,7 +23,6 @@ This repository is a graphical user interface (GUI) that converts multiple types
   - [pikepdf](https://github.com/pikepdf/pikepdf)
   - [pywin32](https://github.com/mhammond/pywin32)
   - [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
-  - [pillow](https://github.com/python-pillow/Pillow)
 
 See the user manual for more information on the installation and use of the tool.
 
