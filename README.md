@@ -42,8 +42,10 @@ See the user manual for more information on the installation and use of the tool
 ### Error detection
 To help with error detection information on every step of the tool is saved in two files: ‘Logging_PDF_conversion_tool.txt’ and 'Log_results.json'.
 
-## Author
+## Authors
 Joana Cardoso
+Dennis van Muijen
+Yilong Wen
 
 ## Contact
 For questions or suggestions please contact: vdwh@pzh.nl
