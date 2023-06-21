@@ -1,6 +1,6 @@
 import hashlib
 import logging
-import os
+import os, re
 from pathlib import Path
 
 """
@@ -35,24 +35,24 @@ def remove_duplicates(process_dir, out_dir, progress, style, file_log, remove_du
         The path to the duplicates directory
     duplicates: set 
         The duplicate files
-    pdf_duplos: int
-        The number of duplicates that are pdf's
     """
-    pdf_duplos = 0
-    md5_files = []
-    out_duplicates = os.path.join(os.path.dirname(
-        process_dir), "Duplicates_" + os.path.basename(process_dir))
 
-    logging.info(f'Duplicates directory: {out_duplicates}')
+    md5_files = []
 
     for root, dirs, files in os.walk(out_dir):
         for name in files:
-            md5_files.append(os.path.join(root, name))
+            if os.path.getsize(os.path.join(root, name)) > 0:
+                # print(f'size:{os.path.getsize(os.path.join(root, name))}')
+                md5_files.append(os.path.join(root, name))
+            else:
+                    logging.error(f'Document is empty: {os.path.join(root, name)}')
+                    # print(f'Document is empty: {os.path.join(root, name)}')
 
     # List duplicates
     md5_dict = {}
     for f in md5_files:
         md5_dict[f] = hashlib.md5(Path(f).read_bytes()).hexdigest()
+
     result = {}
     for key, value in md5_dict.items():
         if value not in result.values():
@@ -62,7 +62,9 @@ def remove_duplicates(process_dir, out_dir, progress, style, file_log, remove_du
     duplicates = keys_a ^ keys_b
 
     # Remove duplicates
-    logging.info(f'Duplicate files to remove: {len(duplicates)}')
+    out_duplicates = os.path.join(os.path.dirname(
+                        process_dir), "Dubbelingen_" + os.path.basename(process_dir))
+
     if len(duplicates) > 0:
         for rmfile in duplicates:
             src = rmfile
@@ -70,6 +72,9 @@ def remove_duplicates(process_dir, out_dir, progress, style, file_log, remove_du
             base_dir = os.path.dirname(target)
 
             if remove_duplicates == True:
+                logging.info(f'Duplicates directory: {out_duplicates}')
+                logging.info(f'Duplicate files to remove: {len(duplicates)}')
+                
                 try:
                     Path(base_dir).mkdir(parents=True, exist_ok=True)
                     logging.debug(f'Creating duplicates directory: {base_dir}')
@@ -94,32 +99,31 @@ def remove_duplicates(process_dir, out_dir, progress, style, file_log, remove_du
                     text='{:.0f} %'.format(progress['value'])
                 )
 
-                # update log table
+            # update log table
+            if re.search('\d+.txt$', rmfile):
+                file_msg= os.path.dirname(rmfile) + '.msg'            
                 try:
                     d = next(item for item in file_log if
-                             os.path.join(os.path.dirname(item['File']), item['File name']) == rmfile)
+                            os.path.join(os.path.dirname(item['File']), item['File name']) == file_msg)
+                    d['Duplicate'] = True
+                    d['Combined'] = False
+                    logging.debug(
+                        f'Updating log table for duplicate: {file_msg}')
+                except:
+                    logging.error(
+                        f'Failed to update log table for duplicate: {file_msg}')
+            else:           
+                try:
+                    d = next(item for item in file_log if
+                            os.path.join(os.path.dirname(item['File']), item['File name']) == rmfile)
                     d['Duplicate'] = True
                     d['Combined'] = False
                     logging.debug(
                         f'Updating log table for duplicate: {rmfile}')
+                    
                 except:
-                    logging.error(
-                        f'Failed to update log table for duplicate: {rmfile}')
-
-            else:
-                # update log table
-                try:
-                    d = next(item for item in file_log if
-                             os.path.join(os.path.dirname(item['File']), item['File name']) == rmfile)
-                    d['Duplicate'] = True
-                    logging.debug(
-                        f'Updating log table for duplicate: {rmfile}')
-                except:
-                    logging.error(
-                        f'Failed to update log table for duplicate: {rmfile}')
-
-            if rmfile.endswith('.pdf'):
-                pdf_duplos = + 1
+                        logging.error(
+                            f'Failed to update log table for duplicate: {rmfile}')
 
     else:
         progress['value'] += 99
@@ -130,4 +134,4 @@ def remove_duplicates(process_dir, out_dir, progress, style, file_log, remove_du
             text='{:.0f} %'.format(progress['value'])
         )
 
-    return out_duplicates, duplicates, pdf_duplos
+    return out_duplicates, duplicates

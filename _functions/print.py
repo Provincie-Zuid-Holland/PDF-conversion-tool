@@ -1,5 +1,4 @@
-import logging
-import os
+import logging, os, re
 import pikepdf
 import subprocess
 import tempfile
@@ -30,9 +29,9 @@ def print_to_pdf(out_dir, file_log, progress, style):
     libreoffice_convert = []
     ext = ['.xlsx', '.xls', '.pdf', ".htm", ".html"]
     supported_formats = [
-        ".pdf", ".doc", ".docx", ".htm", ".html", ".png", ".jpg", ".gif", ".tiff",
+        ".pdf", ".doc", ".docx", ".docx-bestand", ".htm", ".html", ".png", ".jpg", ".jpeg", ".gif", ".tiff",
         ".csv", ".uos", ".xls", ".xlsx", ".xml", ".xlt", ".dif", ".dbf", ".slk", ".xlsm",
-        ".ppt", ".pptx", ".dotx", ".fodp", ".fods", ".fodt",
+        ".ppt", ".pptx", ".dotx", ".fodp", ".fods", ".fodt", ".odt", ".jfif"
         ".odb", ".odf", ".odg", ".odm", ".odp", ".ods", ".otg", ".otp", ".ots", ".ott",
         ".oxt", ".psw", ".sda", ".sdc", ".sdd", ".sdp", ".sdw", ".slk", ".smf", ".stc",
         ".std", ".stw", ".sxc", ".sxg", ".sxi", ".sxm", ".sxw", ".uof", ".uop",
@@ -44,6 +43,10 @@ def print_to_pdf(out_dir, file_log, progress, style):
             file_path = os.path.join(root, name)
             if name_lower.endswith(tuple(supported_formats)):
                 libreoffice_convert.append(file_path)
+            else:
+                    logging.error(f'Document is empty: {file_path}')
+                    # print(f'Document is empty: {file_path}')
+
             # update log table
             if name_lower.endswith(".xlsx") or name_lower.endswith(".xls") or name_lower.endswith(
                     ".htm") or name_lower.endswith(".html"):
@@ -62,7 +65,7 @@ def print_to_pdf(out_dir, file_log, progress, style):
         commandLine = [app, "--headless", "--convert-to",
                        "pdf", "--outdir", os.path.dirname(file), file]
         # Print to pdf
-        if not file.endswith(".pdf"):
+        if not file.endswith((".pdf",".PDF")):
             try:
                 subprocess.run(commandLine, executable=appPath, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                stdin=subprocess.PIPE)
@@ -71,17 +74,30 @@ def print_to_pdf(out_dir, file_log, progress, style):
                 logging.error(f'Failed to print file to PDF: {file}')
 
             # Update log table
-            try:
-                d = next(
-                    item for item in file_log if item['File name'] == file)
-                d['To PDF'] = True
-                logging.debug(f'Updating log table for supported file: {file}')
-            except Exception as e:
-                logging.error(
-                    f'Failed to update log table for supported file: {file}')
+            if re.search('\d+.txt$', file):
+                file_msg= os.path.dirname(file) + '.msg'      
+                try:
+                    d = next(item for item in file_log if
+                            item['File name'] == file_msg)
+                    d['To PDF'] = True
+                    d['Combined'] = True
+                    logging.debug(f'Updating log table for supported file: {file_msg}')
+                except Exception as e:
+                    logging.error(
+                        f'Failed to update log table for supported file: {file_msg}')
+            else:           
+                try:
+                    d = next(item for item in file_log if
+                            item['File name'] == file)
+                    d['To PDF'] = True
+                    d['Combined'] = True
+                    logging.debug(f'Updating log table for supported file: {file}')
+                except Exception as e:
+                    logging.error(
+                        f'Failed to update log table for supported file3: {file}')
 
         # If already PDF, open with and save with pikepdf to get rid of any write protections
-        if file.endswith(".pdf"):
+        if file.endswith((".pdf",".PDF")):
             # Copy to tempdir since input file cannot be overwritten
             temp_dir = tempfile.gettempdir()
             cmd = 'copy "%s" "%s"' % (file, temp_dir)

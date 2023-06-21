@@ -358,7 +358,7 @@ class Application(tk.Frame):
 
             # remove duplicates
             logging.info('Started removing duplicate files')
-            out_duplicates, duplicates, pdf_duplos = dup.remove_duplicates(
+            out_duplicates, duplicates = dup.remove_duplicates(
                 process_dir=self.process_dir, out_dir=out_dir, progress=self.progress, style=self.style, file_log=file_log, remove_duplicates=remove_duplicates)
             logging.info('Finished removing duplicate files')
 
@@ -369,7 +369,7 @@ class Application(tk.Frame):
         else:
             # look for duplicates but do not move
             logging.info('Started looking for duplicate files')
-            out_duplicates, duplicates, pdf_duplos = dup.remove_duplicates(
+            out_duplicates, duplicates = dup.remove_duplicates(
                 process_dir=self.process_dir, out_dir=out_dir, progress=self.progress, style=self.style, file_log=file_log, remove_duplicates=remove_duplicates)
             logging.info('Finished looking for duplicate files')
 
@@ -424,7 +424,7 @@ class Application(tk.Frame):
         total_pdf = 0
         not_converted = []
         excel_html = []
-        ext = ['.xlsx', '.xls', '.pdf', ".htm", ".html", ".XLS", ".XLXS"]
+        ext = ['.xlsx', '.xls', '.pdf', '.PDF', '.htm', '.html', '.XLS', '.XLXS']
         for root, dirs, files in os.walk(out_dir):
             for name in files:
                 name_lower = name.lower()
@@ -446,8 +446,6 @@ class Application(tk.Frame):
                     except:
                         logging.debug(
                             f'Failed to update log table for not converted file: {file_path}')
-
-        total_pdf = total_pdf + pdf_duplos
 
         # Make log table json (for debugging)
         try:
@@ -488,9 +486,9 @@ class Application(tk.Frame):
             logging.error(f'Failed to make log table: {Log_table_path}')
 
         # print messages
-        klaar = 'Ready with conversion to pdf'
+        ready = 'Ready with conversion to pdf'
         total_converted = 'Total converted files: ' + \
-            str(total_pdf - self.pdf_files)
+            str(total_pdf)
         total_not_convert = 'Not converted files: ' + \
             str(len(not_converted))
         output = 'Converted files are in folder: ' + out_dir
@@ -514,7 +512,7 @@ class Application(tk.Frame):
                 self.parent.resizable(width="false", height="false")
                 self.parent.minsize(width=800, height=250)
                 self.parent.maxsize(width=800, height=250)
-                self.label = tk.Label(self.parent, text=klaar).place(
+                self.label = tk.Label(self.parent, text=ready).place(
                     relx=.03, rely=.1, anchor="w")
                 self.label = tk.Label(self.parent, text=total_converted).place(
                     relx=.03, rely=.22, anchor="w")
@@ -563,7 +561,7 @@ class Application(tk.Frame):
                 self.parent.resizable(width="false", height="false")
                 self.parent.minsize(width=800, height=250)
                 self.parent.maxsize(width=800, height=250)
-                self.label = tk.Label(self.parent, text=klaar).place(
+                self.label = tk.Label(self.parent, text=ready).place(
                     relx=.1, rely=.1, anchor="w")
                 self.label = tk.Label(self.parent, text=total_converted).place(
                     relx=.1, rely=.22, anchor="w")
@@ -605,7 +603,7 @@ class Application(tk.Frame):
             self.parent.resizable(width="false", height="false")
             self.parent.minsize(width=800, height=250)
             self.parent.maxsize(width=800, height=250)
-            self.label = tk.Label(self.parent, text=klaar).place(
+            self.label = tk.Label(self.parent, text=ready).place(
                 relx=.1, rely=.1, anchor="w")
             self.label = tk.Label(self.parent, text=total_converted).place(
                 relx=.1, rely=.22, anchor="w")
