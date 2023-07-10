@@ -114,17 +114,17 @@ def extract_msg(file, root_dir, main_email, file_log, out_dir, process_dir, nest
             msg_subj = msg.Subject
             msg_message = msg.Body
 
-            writer.writerow({'text': 'Van:          ' + msg_sender})
-            writer.writerow({'text': 'Verzonden:    ' + str(msg_date)})
-            writer.writerow({'text': 'Aan:          ' + msg_receiver})
+            writer.writerow({'text': 'From:          ' + msg_sender})
+            writer.writerow({'text': 'Date:    ' + str(msg_date)})
+            writer.writerow({'text': 'To:          ' + msg_receiver})
             writer.writerow({'text': 'CC:           ' + msg_cc})
-            writer.writerow({'text': 'Onderwerp:    ' + msg_subj})
+            writer.writerow({'text': 'Subject:    ' + msg_subj})
             writer.writerow({'text': '\n' + msg_message})
             logging.debug(f'Converting file to TXT: {file}')
     except:
             logging.error(f'Failed to convert file to TXT: {file}')
             d = next(
-            item for item in file_log if item['Bestand naam'] == file_out)
+            item for item in file_log if item['File name'] == file_out)
             d['Check'] = True
     # except Exception as e:
     #         logging.error(f'e: {e}')

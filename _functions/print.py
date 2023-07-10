@@ -5,7 +5,7 @@ import tempfile
 from pikepdf import _cpphelpers #uncomment in py file when making exe with pyinstaller
 
 """
-This file is a python file that converts files to pdf. This file is called from the main file ontgrendel_tool_gui.py, def convert_files.
+This file is a python file that converts files to pdf. This file is called from the main file PDF_conversion_tool.py, def convert_files.
 
 Author: Joana Cardoso
 """
@@ -42,14 +42,15 @@ def print_to_pdf(out_dir, file_log, progress, style):
             name_lower = name.lower()
             file_path = os.path.join(root, name)
             if name_lower.endswith(tuple(supported_formats)):
-                libreoffice_convert.append(file_path)
-            else:
+                if os.path.getsize(file_path) > 1:
+                    libreoffice_convert.append(file_path)
+                else:
                     logging.error(f'Document is empty: {file_path}')
                     # print(f'Document is empty: {file_path}')
 
             # update log table
             if name_lower.endswith(".xlsx") or name_lower.endswith(".xls") or name_lower.endswith(
-                    ".htm") or name_lower.endswith(".html"):
+                    ".htm") or name_lower.endswith(".html") or not name_lower.endswith(tuple(supported_formats)):
                 try:
                     d = next(
                         item for item in file_log if item['File name'] == file_path)
@@ -63,12 +64,12 @@ def print_to_pdf(out_dir, file_log, progress, style):
         app = 'soffice.exe'
         appPath = os.path.join("C:\Program Files\LibreOffice\program", app)
         commandLine = [app, "--headless", "--convert-to",
-                       "pdf", "--outdir", os.path.dirname(file), file]
+                        "pdf", "--outdir", os.path.dirname(file), file]
         # Print to pdf
         if not file.endswith((".pdf",".PDF")):
             try:
                 subprocess.run(commandLine, executable=appPath, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               stdin=subprocess.PIPE)
+                                stdin=subprocess.PIPE)
                 logging.debug(f'Printing file to PDF: {file}')
             except:
                 logging.error(f'Failed to print file to PDF: {file}')
@@ -96,28 +97,28 @@ def print_to_pdf(out_dir, file_log, progress, style):
                     logging.error(
                         f'Failed to update log table for supported file3: {file}')
 
-        # If already PDF, open with and save with pikepdf to get rid of any write protections
-        if file.endswith((".pdf",".PDF")):
-            # Copy to tempdir since input file cannot be overwritten
-            temp_dir = tempfile.gettempdir()
-            cmd = 'copy "%s" "%s"' % (file, temp_dir)
-            try:
-                subprocess.call(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                stdin=subprocess.PIPE)
-                pdf_file = os.path.join(
-                    temp_dir, os.path.basename(file))  # path to tempfile
-                pdf = pikepdf.open(pdf_file)  # Open tempfile
-                if 'Metadata' in pdf.Root.keys():  # if PDF metadata is present, delete it
-                    try:
-                        del pdf.Root.Metadata
-                        logging.debug(f'Deleting metadata from file: {file}')
-                    except:
-                        logging.error(
-                            f'Failed to delete metadata from file: {file}')
-                pdf.save(file)  # Save processed pdf
-                logging.debug(f'Resave PDF file: {file}')
-            except:
-                logging.error(f'Failed to resave PDF file: {file}')
+            # If already PDF, open with and save with pikepdf to get rid of any write protections
+            if file.endswith((".pdf",".PDF")):
+                # Copy to tempdir since input file cannot be overwritten
+                temp_dir = tempfile.gettempdir()
+                cmd = 'copy "%s" "%s"' % (file, temp_dir)
+                try:
+                    subprocess.call(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                    stdin=subprocess.PIPE)
+                    pdf_file = os.path.join(
+                        temp_dir, os.path.basename(file))  # path to tempfile
+                    pdf = pikepdf.open(pdf_file)  # Open tempfile
+                    if 'Metadata' in pdf.Root.keys():  # if PDF metadata is present, delete it
+                        try:
+                            del pdf.Root.Metadata
+                            logging.debug(f'Deleting metadata from file: {file}')
+                        except:
+                            logging.error(
+                                f'Failed to delete metadata from file: {file}')
+                    pdf.save(file)  # Save processed pdf
+                    logging.debug(f'Resave PDF file: {file}')
+                except:
+                    logging.error(f'Failed to resave PDF file: {file}')
 
         # Keep Excel and html files since printing these to a suitable layout often requires manual intervention
         if not file.endswith(tuple(ext)):
